@@ -1,7 +1,7 @@
-from point2 import Point2
-import numpy as np
+from point2d import Point2D
+import math
 
-TRAJ_CENTER = Point2(300, 200)
+TRAJ_CENTER = Point2D(300, 200)
 
 class Trajectory:
     def __init__(self, step_length=0.1, radius=100, points_count=1000, center=TRAJ_CENTER, restart=None):
@@ -16,10 +16,10 @@ class Trajectory:
         self.generate()
 
     def generate(self):
-        p = Point2(self.radius, 0)
-        angle_step = 2*np.arcsin(self.step_length/(2.*self.radius))
+        p = Point2D(self.radius, 0)
+        angle_step = 2*math.asin(self.step_length/(2.*self.radius))
         while len(self.points) < self.points_count:
-            self.points.append(Point2(self.center+p))
+            self.points.append(Point2D(self.center+p))
             p.a += angle_step
 
     def current(self):
@@ -38,3 +38,6 @@ class Trajectory:
 
         self.counter = new_counter
         return point
+
+if __name__ == '__main__':
+    print(Trajectory(points_count=5).points)

@@ -3,6 +3,20 @@ import math
 
 TRAJ_CENTER = Point2D(300, 200)
 
+
+TRAJ_STEP_MIN = 0.1
+TRAJ_STEP_MAX = 30.
+TRAJ_STEP_INC = 0.1
+
+
+MIN_STEP = 0.1
+MAX_STEP = 30.0
+
+DT_VAL = 5
+MIN_DT = math.radians(-DT_VAL)
+MAX_DT = math.radians(DT_VAL)
+
+
 class Trajectory:
     def __init__(self, step_length=0.1, radius=100, points_count=1000, center=TRAJ_CENTER, restart=None):
         self.points  = []

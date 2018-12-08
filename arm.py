@@ -37,6 +37,10 @@ class Arm:
         p1 = Point2D(r=self.l1, a=self.t1)
         p2 = Point2D(r=self.l2, a=self.t2+self.t1) + p1
         return Point2D(r=self.l3, a=self.t3+self.t2+self.t1) + p2
+        
+    def error(self, target):
+        # returns the euclidian distance between the endeffector and the target
+        return (self.endeffector() - target).r
 
 if __name__ == '__main__':
     a = Arm()
@@ -82,6 +86,3 @@ if __name__ == '__main__':
     #     self.t3 = t3
 
 
-    # def error(self, target):
-    #     # returns the euclidian distance between the endeffector and the target
-    #     return (self.endeffector() - target).r

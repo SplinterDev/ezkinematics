@@ -2,6 +2,7 @@ from ezgame import Ezgame
 from point2d import Point2D
 
 from arm import *
+from incrementer import IncrementerController
 
 import time
 
@@ -33,10 +34,12 @@ class Application:
         self.init()
 
     def init(self):
-        # using self.loop, initializes a bunch of stuff
+        # for each mode, add one if statement here and create a loop method
+        # using self.loop, the program initializes a bunch of stuff
         if self.loop == INCREMENTER:
             self.ez.init(self.incrementer_loop)
-            self.ez.gui = True
+            # self.ez.gui = True
+            self.controller = IncrementerController(self.arm)
         else:
             self.exit()
 
@@ -45,8 +48,8 @@ class Application:
         self.draw_arm(self.arm)
         # paint the end-effector blue
         self.ez.point(self.arm.endeffector(), color='blue')
-        # and move every joint in 1 degree
-        self.arm.move([math.pi/180.]*3)
+        # and let the controller control the arm
+        self.controller.control(ORIGIN)
 
     def draw_arm(self, arm, color='black'):
         # to draw the arm we get the position of each joint

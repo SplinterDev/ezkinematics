@@ -20,6 +20,9 @@ class Arm:
         self.thetas = thetas
         self.num_joints = len(thetas)
 
+    def get_num_joints(self):
+        return self.num_joints
+
     def move(self, dt):
         """
         Receives:

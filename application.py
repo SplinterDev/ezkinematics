@@ -2,7 +2,8 @@ from ezgame import Ezgame
 from point2d import Point2D
 
 from arm import *
-from incrementer import IncrementerController
+from controllers.incrementer import IncrementerController
+from controllers.jacobian import JacobianController
 
 import time
 
@@ -13,7 +14,7 @@ FPS = 30
 JACOBIAN    = 0
 INCREMENTER = 1
 
-CURRENT_MODE = INCREMENTER
+CURRENT_MODE = JACOBIAN
 # to avoid creating a new Point2D as (0,0) every loop, reuse this one:
 ORIGIN = Point2D()
 
@@ -34,14 +35,20 @@ class Application:
         self.init()
 
     def init(self):
-        # for each mode, add one if statement here and create a loop method
+        # for each mode, add one elif statement here and create a loop method
         # using self.loop, the program initializes a bunch of stuff
         if self.loop == INCREMENTER:
             self.ez.init(self.incrementer_loop)
-            # self.ez.gui = True
             self.controller = IncrementerController(self.arm)
+        elif self.loop == JACOBIAN:
+            self.ez.init(self.jacobian_loop)
+            self.controller = JacobianController(self.arm)
         else:
             self.exit()
+
+    #######################
+    ### LOOPS BEGINNING ###
+    #######################
 
     def incrementer_loop(self):
         # in this mode, we draw the arm
@@ -50,6 +57,22 @@ class Application:
         self.ez.point(self.arm.endeffector(), color='blue')
         # and let the controller control the arm
         self.controller.control(ORIGIN)
+
+    def jacobian_loop(self):
+        # in this mode, we draw the arm
+        self.draw_arm(self.arm)
+        # paint the end-effector blue
+        self.ez.point(self.arm.endeffector(), color='blue')
+        # set the mouse position as target
+        target = self.ez.getMousePos()
+        # paint the target green
+        self.ez.point(target, color='green')
+        # and let the controller control the arm
+        self.controller.control(target)
+
+    #######################
+    ###### LOOPS END ######
+    #######################
 
     def draw_arm(self, arm, color='black'):
         # to draw the arm we get the position of each joint

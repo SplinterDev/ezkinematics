@@ -1,6 +1,6 @@
 import numpy as np
 
-MAX_STEP = 5
+MAX_STEP = 100000000
 
 class JacobianController:
     def __init__(self, arm):
@@ -23,7 +23,8 @@ class JacobianController:
         delta_pos = target - curr_end
         # we limit the size of the delta_pos vector as MAX_STEP
         # to avoid making large steps
-        delta_pos.r = MAX_STEP
+        if delta_pos.r > MAX_STEP:
+            delta_pos.r = MAX_STEP
 
         # calculate the inverse Jacobian matrix
         iJ = 1/(self.arm.lengths[0]*self.arm.lengths[1]*np.sin(self.arm.thetas[1])) * np.array([
